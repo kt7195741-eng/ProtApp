@@ -69,12 +69,22 @@ const Navbar = ({ isAuthenticated, onLogout }) => {
 
                     {/* 3. RIGHT SIDE - CTAs & Lang Toggle */}
                     <div className="hidden lg:flex items-center gap-6">
-                        {/* Language toggle */}
-                        <button onClick={toggleLang} className="text-sm font-bold text-gray-500 hover:text-[#0a3d2e] transition-colors flex items-center gap-1">
-                            <span className={language === 'en' ? 'text-[#0a3d2e]' : ''}>EN</span>
-                            <span className="text-gray-300 font-light">|</span>
-                            <span className={language === 'tr' ? 'text-[#0a3d2e]' : ''}>TR</span>
-                        </button>
+                        {/* Language Selectors */}
+                        <div className="flex items-center gap-1.5 font-bold text-xs tracking-widest text-gray-400">
+                            <button
+                                onClick={() => switchLanguage('en')}
+                                className={`transition-all duration-300 hover:text-[#0a3d2e] ${language === 'en' ? 'text-[#0a3d2e] scale-110' : 'hover:scale-105'}`}
+                            >
+                                EN
+                            </button>
+                            <span className="text-gray-200 font-light select-none">|</span>
+                            <button
+                                onClick={() => switchLanguage('tr')}
+                                className={`transition-all duration-300 hover:text-[#0a3d2e] ${language === 'tr' ? 'text-[#0a3d2e] scale-110' : 'hover:scale-105'}`}
+                            >
+                                TR
+                            </button>
+                        </div>
 
                         <div className="h-5 w-[1px] bg-gray-200"></div>
 
@@ -127,9 +137,23 @@ const Navbar = ({ isAuthenticated, onLogout }) => {
                     ))}
                 </nav>
                 <div className="mt-auto flex flex-col gap-6">
-                    <button onClick={() => { toggleLang(); setMobileMenuOpen(false); }} className="text-left text-lg font-bold text-gray-500 flex items-center gap-2 w-fit">
-                        {t('corp_nav_lang')}: <span className="text-[#0a3d2e]">{language.toUpperCase()}</span>
-                    </button>
+                    {/* Mobile Language Selection */}
+                    <div className="flex items-center gap-4 text-xl font-black text-gray-300">
+                        <button
+                            onClick={() => switchLanguage('en')}
+                            className={`transition-all duration-300 ${language === 'en' ? 'text-[#0a3d2e] scale-110' : ''}`}
+                        >
+                            EN
+                        </button>
+                        <span className="text-gray-100 font-light select-none">|</span>
+                        <button
+                            onClick={() => switchLanguage('tr')}
+                            className={`transition-all duration-300 ${language === 'tr' ? 'text-[#0a3d2e] scale-110' : ''}`}
+                        >
+                            TR
+                        </button>
+                    </div>
+
                     {isAuthenticated ? (
                         <button onClick={() => { onLogout(); setMobileMenuOpen(false); }} className="w-full py-4 text-center rounded-2xl bg-gray-100 text-[#111] font-bold text-lg">{t('corp_nav_logout')}</button>
                     ) : (

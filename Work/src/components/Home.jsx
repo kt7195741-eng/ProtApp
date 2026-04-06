@@ -86,49 +86,53 @@ const Home = () => {
 
     const [email, setEmail] = useState('');
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const stat1 = useCountUp(4.8, 2000, statsVisible);
     const stat2 = useCountUp(36.44, 2500, statsVisible);
     const stat3 = useCountUp(2050, 2000, statsVisible);
     const stat4 = useCountUp(90, 1800, statsVisible);
 
     const galleryImages = [
-        { img: galleryImg1, title: 'Sürdürülebilir Enerji' },
-        { img: galleryImg2, title: 'Geri Dönüşüm' },
-        { img: galleryImg3, title: 'Küresel Standartlar' },
-        { img: galleryImg4, title: 'Yeşil Doğa' },
-        { img: galleryImg5, title: 'Temiz Çevre' },
-        { img: galleryImg6, title: 'Doğal Yaşam' },
-        { img: galleryImg7, title: 'Yenilenebilir Kaynaklar' },
-        { img: galleryImg8, title: 'Gezegen Koruma' },
-        { img: galleryImg9, title: 'Ekolojik Denge' },
+        { img: galleryImg1, title: t('corp_gallery_1') },
+        { img: galleryImg2, title: t('corp_gallery_2') },
+        { img: galleryImg3, title: t('corp_gallery_3') },
+        { img: galleryImg4, title: t('corp_gallery_4') },
+        { img: galleryImg5, title: t('corp_gallery_5') },
+        { img: galleryImg6, title: t('corp_gallery_6') },
+        { img: galleryImg7, title: t('corp_gallery_7') },
+        { img: galleryImg8, title: t('corp_gallery_8') },
+        { img: galleryImg9, title: t('corp_gallery_9') },
     ];
     const marqueeImages = [...galleryImages, ...galleryImages];
 
     const testimonials = [
-        { name: 'Ahmet Yılmaz', role: 'Sürdürülebilirlik Uzmanı', company: 'Koç Holding', text: 'CarboonIT ile emisyon verilerimizi gerçek zamanlı takip edebiliyoruz.', img: 'https://i.pravatar.cc/150?img=11' },
-        { name: 'Mehmet Kaya', role: 'Proje Asistanı', company: 'EnerjiTech A.Ş.', text: 'Raporlama sürecimiz %70 kısaldı. Harika bir platform.', img: 'https://i.pravatar.cc/150?img=12' },
-        { name: 'Zeynep Arslan', role: 'Çevre Mühendisi', company: 'Arçelik', text: 'SKDM uyumu için ihtiyacımız olan tek araç.', img: 'https://i.pravatar.cc/150?img=5' },
-        { name: 'Ali Demir', role: 'Veri Analisti', company: 'Zorlu Enerji', text: 'Karbon vergileri konusunda bizi bir adım öne taşıdı.', img: 'https://i.pravatar.cc/150?img=14' },
-        { name: 'Fatma Şahin', role: 'Operasyon Sorumlusu', company: 'EnerjiSa', text: 'Kullanımı çok kolay, raporları çok net.', img: 'https://i.pravatar.cc/150?img=9' },
-        { name: 'Burak Öztürk', role: 'Danışman', company: 'McKinsey TR', text: 'Müşterilerimize en çok önerdiğimiz karbon platformu.', img: 'https://i.pravatar.cc/150?img=12' },
+        { name: t('corp_test_name_1'), role: t('corp_test_title_1'), company: t('corp_test_company_1'), text: t('corp_test_quote_1'), img: 'https://i.pravatar.cc/150?img=11' },
+        { name: t('corp_test_name_2'), role: t('corp_test_title_2'), company: t('corp_test_company_2'), text: t('corp_test_quote_2'), img: 'https://i.pravatar.cc/150?img=12' },
+        { name: t('corp_test_name_3'), role: t('corp_test_title_3'), company: t('corp_test_company_3'), text: t('corp_test_quote_3'), img: 'https://i.pravatar.cc/150?img=5' },
+        { name: t('corp_test_name_4'), role: t('corp_test_title_4'), company: t('corp_test_company_4'), text: t('corp_test_quote_4'), img: 'https://i.pravatar.cc/150?img=14' },
+        { name: t('corp_test_name_5'), role: t('corp_test_title_5'), company: t('corp_test_company_5'), text: t('corp_test_quote_5'), img: 'https://i.pravatar.cc/150?img=9' },
+        { name: t('corp_test_name_6'), role: t('corp_test_title_6'), company: t('corp_test_company_6'), text: t('corp_test_quote_6'), img: 'https://i.pravatar.cc/150?img=12' },
     ];
     // Duplicate testimoials for seamless infinite scroll
     const carouselItems = [...testimonials, ...testimonials];
 
     const pricingFeatures = [
-        { label: 'Sera Gazı Kategorileri', tooltip: 'Sistemde hesaplanabilen sera gazı kategorileri ve kapsamlarıdır.' },
-        { label: 'Azami Şirket Adedi', tooltip: 'Platforma tanımlayabileceğiniz maksimum yasal varlık ve şirket sayısıdır.' },
-        { label: 'Tesis Adedi', tooltip: 'İşletmenize ait emisyonları hesaplanacak fiziksel lokasyonların (fabrika, ofis vb.) toplam sınırıdır.' },
-        { label: 'Kullanıcı Adedi', tooltip: 'Sistemde tanımlanabilen azami kullanıcı sayısıdır. Her bir kullanıcı kendi kullanıcı adı ve parolası ile yetki tanımlamaları içindeki emisyonları yönetebilir veya görüntüleyebilir.' },
-        { label: 'Standartlara Uygun Raporlama', tooltip: 'Çıktıların ISO 14064, SKDM ve GHG protokollerine tam uyumlu olması.' },
-        { label: 'Hedef Belirleme', tooltip: 'Bilimsel temelli (SBTi) emisyon azaltım ve Net Sıfır hedefleri kurgulama.' },
-        { label: 'Kanıt Dokümanı Yükleme', tooltip: 'Hesaplamalara dayanak olan belgeleri sisteme güvenle yükleme ve arşivleme.' },
-        { label: 'Karbon Ofsetleme', tooltip: 'Sertifikalı projelerden ofsetleme yaparak nötrleme işlemlerinin yönetimi.' },
-        { label: 'Toplu Veri Yükleme', tooltip: 'Excel / CSV şablonları üzerinden saniyeler içinde binlerce giriş aktarma.' },
-        { label: 'Senaryo Analizi', tooltip: 'Farklı yatırımların (örn. GES) emisyonlara etkisini önceden analiz etme.' },
-        { label: 'Konsolide Raporlama', tooltip: 'Tüm şirket/tesislerin verisini kurumsal seviyede entegre biçimde çekme.' },
-        { label: 'API Desteği', tooltip: 'ERP (SAP vs.) sistemlerinden otomatik veri aktarımı sağlayan REST API.' },
-        { label: 'Eğitim', tooltip: 'Platform yetkinliği kazanmanız için uygulamalı platform eğitimi.' }
+        { label: t('pricing_feat_1_label'), tooltip: t('pricing_feat_1_tooltip') },
+        { label: t('pricing_feat_2_label'), tooltip: t('pricing_feat_2_tooltip') },
+        { label: t('pricing_feat_3_label'), tooltip: t('pricing_feat_3_tooltip') },
+        { label: t('pricing_feat_4_label'), tooltip: t('pricing_feat_4_tooltip') },
+        { label: t('pricing_feat_5_label'), tooltip: t('pricing_feat_5_tooltip') },
+        { label: t('pricing_feat_6_label'), tooltip: t('pricing_feat_6_tooltip') },
+        { label: t('pricing_feat_7_label'), tooltip: t('pricing_feat_7_tooltip') },
+        { label: t('pricing_feat_8_label'), tooltip: t('pricing_feat_8_tooltip') },
+        { label: t('pricing_feat_9_label'), tooltip: t('pricing_feat_9_tooltip') },
+        { label: t('pricing_feat_10_label'), tooltip: t('pricing_feat_10_tooltip') },
+        { label: t('pricing_feat_11_label'), tooltip: t('pricing_feat_11_tooltip') },
+        { label: t('pricing_feat_12_label'), tooltip: t('pricing_feat_12_tooltip') },
+        { label: t('pricing_feat_13_label'), tooltip: t('pricing_feat_13_tooltip') }
     ];
 
     const handleSubscribe = (e) => { e.preventDefault(); setEmail(''); };
@@ -140,6 +144,10 @@ const Home = () => {
                 .reveal.visible .stagger-target:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.1s; }
                 .reveal.visible .stagger-target:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
                 .reveal.visible .stagger-target:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.5s; }
+
+                /* Modern Reveal Animation */
+                .reveal { opacity: 0; transform: translateY(30px); transition: opacity 1.2s cubic-bezier(0.2, 1, 0.3, 1), transform 1.2s cubic-bezier(0.2, 1, 0.3, 1); }
+                .reveal.revealed { opacity: 1; transform: translateY(0); }
             `}</style>
 
             {/* ═══════════ 1. HERO (Parallax & Motion) ═══════════ */}
@@ -156,9 +164,9 @@ const Home = () => {
                 <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 w-full pt-32 pb-20">
                     <div className="max-w-4xl">
                         {/* Animated Label */}
-                        <div className="section-label animate-fade-in-up">
+                        <div className="section-label">
                             <span className="dot" />
-                            <span>{t('corp_hero_label')}</span>
+                            <span className="uppercase tracking-widest">{t('corp_hero_label')}</span>
                         </div>
 
                         {/* Snap-in Headline Words */}
@@ -192,7 +200,7 @@ const Home = () => {
                 <div className="marquee-track cursor-default">
                     {[...Array(4)].map((_, i) => (
                         <span key={i} className="text-sm md:text-base font-semibold tracking-[0.15em] uppercase text-white/90 whitespace-nowrap px-4">
-                            KARBON TAKİP &nbsp;✦&nbsp; SÜRDÜRÜLEBİLİRLİK &nbsp;✦&nbsp; EMİSYON HESAPLAMA &nbsp;✦&nbsp; ÇEVRE DOSTU GELECEK &nbsp;✦&nbsp; NET SIFIR 2050 &nbsp;✦&nbsp;&nbsp;
+                            {t('corp_marquee_1')} &nbsp;✦&nbsp; {t('corp_marquee_2')} &nbsp;✦&nbsp; {t('corp_marquee_3')} &nbsp;✦&nbsp; {t('corp_marquee_4')} &nbsp;✦&nbsp; {t('corp_marquee_5')} &nbsp;✦&nbsp;&nbsp;
                         </span>
                     ))}
                 </div>
@@ -210,19 +218,17 @@ const Home = () => {
                         <div className="lg:w-1/2">
                             <RevealLeft delay={0}>
                                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] text-[#111] mb-6">
-                                    {isEn ? "Take Control of Your Corporate Carbon Footprint" : "Kurumsal Karbon Ayak İzinizi Kontrol Altına Alın"}
+                                    {t('corp_demo_promo_title')}
                                 </h2>
-                            </RevealLeft>
-                            <RevealLeft delay={0.1}>
-                                <p className="text-xl text-gray-500 mb-10 max-w-lg leading-relaxed">
-                                    {isEn ? "Carbon emission management and reporting is now much easier with CarboonIT." : "CarboonIT ile karbon emisyon yönetimi ve raporlaması artık çok daha kolay."}
+                                <p className="text-gray-500 max-w-xl animate-fade-in-up" style={{ animationDelay: '1.4s' }}>
+                                    {t('corp_demo_promo_desc')}
                                 </p>
-                            </RevealLeft>
-                            <RevealLeft delay={0.2}>
-                                <div>
-                                    <Link to="/demo" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-[#22c55e] hover:bg-[#1ea750] text-[#0a3d2e] font-bold text-lg transition-transform hover:scale-105 shadow-xl shadow-[#22c55e]/20">
-                                        {isEn ? "REQUEST A DEMO" : "DEMO TALEBİ GÖNDER"}
-                                    </Link>
+                                <div className="animate-fade-in-up" style={{ animationDelay: '1.6s' }}>
+                                    <div className="flex flex-wrap gap-4">
+                                        <Link to="/demo" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-[#22c55e] hover:bg-[#1ea750] text-[#0a3d2e] font-bold text-lg transition-transform hover:scale-105 shadow-xl shadow-[#22c55e]/20">
+                                            {t('corp_demo_promo_btn')}
+                                        </Link>
+                                    </div>
                                 </div>
                             </RevealLeft>
                         </div>
@@ -241,14 +247,14 @@ const Home = () => {
                                     {/* Sidebar */}
                                     <div className="w-40 bg-[#0a3d2e] p-5 flex flex-col gap-4">
                                         <div className="w-20 h-5 bg-white/20 rounded mb-4"></div>
-                                        {['Anasayfa', 'Veri Girişi', 'Raporlama', 'Senaryolar', 'Yönetim', 'Destek'].map(item => (
+                                        {[t('corp_mockup_home'), t('corp_mockup_data'), t('corp_mockup_report'), t('corp_mockup_scenarios'), t('corp_mockup_mgmt'), t('corp_mockup_support')].map(item => (
                                             <div key={item} className="text-white/60 text-xs font-bold hover:text-white hover:translate-x-1 transition-all cursor-pointer">{item}</div>
                                         ))}
                                     </div>
 
                                     {/* Main Content Area */}
                                     <div className="flex-1 p-8 bg-gray-50/50 flex flex-col gap-6 overflow-hidden">
-                                        <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Gösterge Paneli</div>
+                                        <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t('corp_mockup_dash')}</div>
 
                                         {/* Stat Grid */}
                                         <div className="grid grid-cols-4 gap-4">
@@ -272,7 +278,7 @@ const Home = () => {
 
                                         {/* Fake Chart */}
                                         <div className="bg-white border border-gray-100 rounded-xl p-5 flex-1 flex flex-col shadow-sm">
-                                            <div className="text-xs font-bold text-gray-400 mb-auto">Zamana Göre Emisyonlar</div>
+                                            <div className="text-xs font-bold text-gray-400 mb-auto">{t('corp_mockup_charts')}</div>
                                             <div className="flex items-end h-[100px] gap-3 px-2 pb-2 border-b border-gray-100">
                                                 <div className="flex-1 bg-[#0a3d2e]/20 hover:bg-[#0a3d2e] hover:scale-y-110 origin-bottom cursor-pointer rounded-t-md transition-all" style={{ height: '40%' }}></div>
                                                 <div className="flex-1 bg-[#0a3d2e]/30 hover:bg-[#0a3d2e] hover:scale-y-110 origin-bottom cursor-pointer rounded-t-md transition-all" style={{ height: '60%' }}></div>
@@ -307,7 +313,7 @@ const Home = () => {
                         <Reveal delay={0}>
                             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e6f2e6] border border-[#aaddaa] text-[#0a3d2e] text-xs uppercase tracking-widest font-bold mb-6">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse"></span>
-                                {isEn ? "About Us" : "Hakkımızda"}
+                                {t('corp_about_label')}
                             </div>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#111] leading-tight mb-6">
                                 {t('corp_hero_btn_what_is')}
@@ -384,11 +390,8 @@ const Home = () => {
                 <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pb-12 z-10 relative">
                     <Reveal delay={0}>
                         <div className="text-center mb-14">
-                            <div className="section-label justify-center">
-                                <span className="dot" /><span>Projelerimiz & İlham</span>
-                            </div>
-                            <h2 className="text-4xl lg:text-5xl font-bold text-[#111] mt-4">Sürdürülebilir Geleceğe Bakış</h2>
-                            <p className="text-lg text-gray-500 mt-3 max-w-xl mx-auto">Çevre dostu projelerimizden ve sürdürülebilirlik yolculuğumuzdan kareler</p>
+                            <h2 className="text-4xl lg:text-5xl font-bold text-[#111] mt-4">{t('corp_project_heading')}</h2>
+                            <p className="text-lg text-gray-500 mt-3 max-w-xl mx-auto">{t('corp_project_subheading')}</p>
                         </div>
                     </Reveal>
 
@@ -421,8 +424,8 @@ const Home = () => {
             <section id="pricing-section" className="bg-[#f0f8ff] pt-24 pb-10 lg:pt-32 relative z-20">
                 <Reveal delay={0}>
                     <div className="max-w-[1400px] mx-auto px-6 lg:px-10 text-center mb-16 relative z-10">
-                        <h2 className="text-4xl lg:text-5xl font-bold text-[#111]">{isEn ? "Simple plans for serious business" : "Ciddi işler için basit planlar"}</h2>
-                        <p className="text-lg text-gray-500 mt-4">{isEn ? "Choose the plan that suits you best" : "Size en uygun planı seçin"}</p>
+                        <h2 className="text-4xl lg:text-5xl font-bold text-[#111]">{t('pricing_title')}</h2>
+                        <p className="text-lg text-gray-500 mt-4">{t('pricing_subtitle')}</p>
                     </div>
                 </Reveal>
 
@@ -460,8 +463,8 @@ const Home = () => {
                             <div className="flex-1 flex flex-col space-y-6 text-center">
                                 <div className="flex items-center justify-center h-10 w-full relative group">
                                     <div className="flex flex-col leading-[1.3]">
-                                        <span className="text-[10px] font-black text-gray-600">ISO 14064-1:2018: Kategori 1-2</span>
-                                        <span className="text-[10px] font-bold text-gray-400">GHG Protokolü: Kapsam 1-2</span>
+                                        <span className="text-[10px] font-black text-gray-600">{t('corp_pricing_iso')} 1-2-2</span>
+                                        <span className="text-[10px] font-bold text-gray-400">{t('corp_pricing_ghg')} 1-2</span>
                                     </div>
                                 </div>
                                 <div className="text-[13px] font-bold text-gray-600 flex items-center justify-center h-8">1</div>
@@ -488,8 +491,8 @@ const Home = () => {
                             <div className="flex-1 flex flex-col space-y-6 text-center">
                                 <div className="flex items-center justify-center h-10 w-full relative group">
                                     <div className="flex flex-col leading-[1.3]">
-                                        <span className="text-[10px] font-black text-gray-600">ISO 14064-1:2018: Kategori 1-2-3-4-5-6</span>
-                                        <span className="text-[10px] font-bold text-gray-400">GHG Protokolü: Kapsam 1-2-3</span>
+                                        <span className="text-[10px] font-black text-gray-600">{t('corp_pricing_iso')} 1-2-3-4-5-6</span>
+                                        <span className="text-[10px] font-bold text-gray-400">{t('corp_pricing_ghg')} 1-2-3</span>
                                     </div>
                                 </div>
                                 <div className="text-[13px] font-bold text-gray-600 flex items-center justify-center h-8">1</div>
@@ -516,8 +519,8 @@ const Home = () => {
                             <div className="flex-1 flex flex-col space-y-6 text-center">
                                 <div className="flex items-center justify-center h-10 w-full relative group">
                                     <div className="flex flex-col leading-[1.3]">
-                                        <span className="text-[10px] font-black text-gray-600">ISO 14064-1:2018: Kategori 1-2-3-4-5-6</span>
-                                        <span className="text-[10px] font-bold text-gray-400">GHG Protokolü: Kapsam 1-2-3</span>
+                                        <span className="text-[10px] font-black text-gray-600">{t('corp_pricing_iso')} 1-2-3-4-5-6</span>
+                                        <span className="text-[10px] font-bold text-gray-400">{t('corp_pricing_ghg')} 1-2-3</span>
                                     </div>
                                 </div>
                                 <div className="text-[13px] font-bold text-gray-600 flex items-center justify-center h-8">1*</div>
@@ -538,7 +541,7 @@ const Home = () => {
 
                     </div>
                     <Reveal delay={0.5}>
-                        <p className="text-xs text-gray-400 mt-8 text-center">{isEn ? "* Additional companies, facilities, and users are subject to an extra fee." : "* İlave her şirket, tesis ve kullanıcı ek ücrete tabidir."}</p>
+                        <p className="text-xs text-gray-400 mt-8 text-center">{t('pricing_footer_note')}</p>
                     </Reveal>
                 </div>
             </section>
@@ -550,13 +553,13 @@ const Home = () => {
                         <div className="relative aspect-video rounded-[32px] overflow-hidden shadow-2xl shadow-black/15 border border-gray-100">
                             <video
                                 className="w-full h-full object-cover"
-                                autoPlay
-                                muted
                                 loop
                                 playsInline
+                                controls
+                                poster="/video-thumbnail.png"
                             >
                                 <source src="/videocarbon.mp4" type="video/mp4" />
-                                {isEn ? "Your browser does not support the video tag." : "Tarayıcınız video etiketini desteklemiyor."}
+                                {t('video_not_supported')}
                             </video>
                         </div>
                     </Reveal>
@@ -567,7 +570,7 @@ const Home = () => {
             <section className="pt-10 lg:pt-16 pb-24 lg:pb-32 bg-linear-to-b from-[#f0f8ff] to-[#f6faf6] overflow-hidden">
                 <Reveal delay={0}>
                     <div className="max-w-[1400px] mx-auto px-6 lg:px-10 mb-16 text-center">
-                        <h2 className="text-4xl lg:text-5xl font-bold leading-tight mb-4 text-[#111]">{isEn ? "What Our Clients Say?" : "Müşterilerimiz Ne Diyor?"}</h2>
+                        <h2 className="text-4xl lg:text-5xl font-bold leading-tight mb-4 text-[#111]">{t('corp_test_heading')}</h2>
                     </div>
                 </Reveal>
 
@@ -608,36 +611,35 @@ const Home = () => {
                     <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-black/40 rounded-full blur-3xl pointer-events-none"></div>
 
                     {/* Left Column: Typography */}
-                    <div className="relative z-10 lg:w-1/2 text-center lg:text-left">
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#aaddaa] text-xs uppercase tracking-widest font-bold mb-6 backdrop-blur-md">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse"></span>
-                            {isEn ? "Newsletter Subscription" : "Bülten Aboneliği"}
+                    <div className="flex-1 text-center lg:text-left">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-50 rounded-full text-green-600 text-[10px] font-black uppercase tracking-widest mb-4">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                            {t('corp_newsletter_label')}
                         </div>
-                        <h3 className="text-4xl lg:text-[3.2rem] font-black text-white mb-6 tracking-tight leading-[1.1]">
-                            CarbonIT <br className="hidden lg:block" />
-                            <span className="text-transparent bg-clip-text bg-linear-to-r from-[#22c55e] to-[#aaddaa]">{isEn ? "Stay Informed" : "Haberin Olsun"}</span>
-                        </h3>
-                        <p className="text-white/70 text-lg leading-relaxed max-w-md mx-auto lg:mx-0 font-medium">
-                            {isEn ? "Be the first to know about our sustainability solutions, regulatory updates, and new features." : "Sürdürülebilirlik çözümlerimizden, mevzuat güncellemelerinden ve yeni özelliklerden ilk sen haberdar ol."}
+                        <h2 className="text-4xl lg:text-5xl font-bold leading-[1.1] mb-6">
+                            <span className="text-white">{t('corp_footer_newsletter_title')} </span>
+                            <span className="text-transparent bg-clip-text bg-linear-to-r from-[#22c55e] to-[#aaddaa]">{t('corp_newsletter_stay_informed')}</span>
+                        </h2>
+                        <p className="text-white/70 text-lg mb-10 max-w-lg leading-relaxed mx-auto lg:mx-0">
+                            {t('corp_newsletter_desc_long')}
                         </p>
-                    </div>
 
-                    {/* Right Column: Form */}
-                    <div className="relative z-10 lg:w-1/2 w-full max-w-md mx-auto lg:ml-auto mt-6 lg:mt-0">
-                        <form onSubmit={handleSubscribe} className="bg-white/10 p-2 pl-6 rounded-full border border-white/20 backdrop-blur-xl flex flex-col sm:flex-row gap-2 shadow-[0_8px_32px_0_rgba(0,0,0,0.15)] ring-4 ring-white/5 focus-within:ring-white/10 overflow-hidden transition-all">
+                        <form onSubmit={handleSubscribe} className="relative max-w-md mx-auto lg:mx-0 group">
                             <input
-                                type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-                                placeholder={isEn ? "Your email address..." : "E-posta adresiniz..."}
-                                className="flex-1 bg-transparent border-none text-white placeholder-white/50 focus:outline-none focus:ring-0 text-base font-medium min-w-0"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder={t('corp_newsletter_placeholder_long')}
+                                required
+                                className="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-4.5 text-sm focus:outline-none focus:border-green-500 transition-all shadow-sm group-hover:shadow-md h-16 text-white placeholder-white/50"
                             />
-                            <button type="submit" className="bg-[#22c55e] hover:bg-[#1ea750] text-[#0a3d2e] font-black px-8 py-4 sm:py-3.5 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-[#22c55e]/20 text-lg sm:text-base shrink-0 flex items-center justify-center gap-2">
-                                {isEn ? "Subscribe to Newsletter" : "Bültene Kaydol"}
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                            <button type="submit" className="absolute right-2 top-2 bottom-2 px-6 bg-white text-[#0a3d2e] rounded-xl text-xs font-black hover:bg-green-500 hover:text-white transition-all active:scale-95 shadow-lg flex items-center gap-2">
+                                {t('corp_footer_newsletter_btn')}
                             </button>
                         </form>
-                        <p className="mt-5 text-xs text-white/40 text-center lg:text-left flex items-center justify-center lg:justify-start gap-1.5 ml-2">
+                        <p className="mt-6 text-[11px] text-white/40 font-medium flex items-center justify-center lg:justify-start gap-1.5">
                             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
-                            {isEn ? "We don't send spam, your data is secure." : "Spam göndermiyoruz, verileriniz güvende."}
+                            {t('corp_newsletter_note')}
                         </p>
                     </div>
                 </Reveal>
