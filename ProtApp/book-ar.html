@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProtApp — الكتاب</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: transparent;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Amiri', serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* ── Book wrapper ───────────────────────── */
+        .book-scene {
+            perspective: 2200px;
+            width: 95vw;
+            max-width: 1400px;
+            height: calc(100vh - 120px);
+            max-height: 850px;
+            position: relative;
+        }
+
+        .book {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* ── Clean white paper ──────────────────── */
+        .paper {
+            background-color: #ffffff;
+        }
+
+        /* ── Left & Right halves (static) ──────── */
+        .half {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* RIGHT half — cover/hardcover side */
+        .half-right {
+            left: 50%;
+            border-radius: 2px 12px 12px 2px;
+            box-shadow:
+                8px 8px 20px rgba(0, 0, 0, 0.3),
+                3px 0 0 0 #e8e4df,
+                5px 0 0 0 #d4d0cb,
+                7px 0 0 0 #c0bcb7,
+                8px 1px 1px rgba(0, 0, 0, 0.15);
+        }
+
+        /* LEFT half — content side */
+        .half-left {
+            left: 0;
+            border-radius: 12px 2px 2px 12px;
+            box-shadow:
+                -8px 8px 20px rgba(0, 0, 0, 0.3),
+                -3px 0 0 0 #e8e4df,
+                -5px 0 0 0 #d4d0cb,
+                -7px 0 0 0 #c0bcb7,
+                -8px 1px 1px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Inner spine shadow — right half */
+        .half-right::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 60px;
+            height: 100%;
+            background: linear-gradient(to right,
+                    rgba(0, 0, 0, 0.12) 0%,
+                    rgba(0, 0, 0, 0.06) 30%,
+                    rgba(0, 0, 0, 0.02) 60%,
+                    transparent 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Inner spine shadow — left half */
+        .half-left::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 100%;
+            background: linear-gradient(to left,
+                    rgba(0, 0, 0, 0.12) 0%,
+                    rgba(0, 0, 0, 0.06) 30%,
+                    rgba(0, 0, 0, 0.02) 60%,
+                    transparent 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Subtle top/bottom paper lines */
+        .half-right::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid rgba(0, 0, 0, 0.04);
+            border-bottom: 3px solid rgba(0, 0, 0, 0.06);
+            pointer-events: none;
+            z-index: 1;
+            border-radius: 2px 12px 12px 2px;
+        }
+
+        .half-left::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-top: 2px solid rgba(0, 0, 0, 0.04);
+            border-bottom: 3px solid rgba(0, 0, 0, 0.06);
+            pointer-events: none;
+            z-index: 1;
+            border-radius: 12px 2px 2px 12px;
+        }
+
+        /* ══════════════════════════════════════════
+           FLIP PAGE — uses SAME hinge as LTR:
+           Sits on the RIGHT half, hinges from LEFT edge (spine).
+           flipForward: rotateY(0 → -180deg) = swings right-to-left.
+           This is correct for Arabic RTL "next page" motion.
+           ══════════════════════════════════════════ */
+        .flip-page {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .flip-page.flipping-forward {
+            animation: flipForward 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .flip-page.flipping-backward {
+            animation: flipBackward 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes flipForward {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(-180deg);
+            }
+        }
+
+        @keyframes flipBackward {
+            0% {
+                transform: rotateY(-180deg);
+            }
+
+            100% {
+                transform: rotateY(0deg);
+            }
+        }
+
+        .flip-front,
+        .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            overflow: hidden;
+        }
+
+        .flip-front {
+            border-radius: 2px 12px 12px 2px;
+            z-index: 1;
+        }
+
+        /* Spine-side shadow on front face */
+        .flip-front::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 60px;
+            height: 100%;
+            background: linear-gradient(to right,
+                    rgba(0, 0, 0, 0.10) 0%,
+                    rgba(0, 0, 0, 0.04) 40%,
+                    transparent 100%);
+            pointer-events: none;
+        }
+
+        .flip-back {
+            transform: rotateY(180deg);
+            border-radius: 12px 2px 2px 12px;
+        }
+
+        /* Spine-side shadow on back face */
+        .flip-back::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 100%;
+            background: linear-gradient(to left,
+                    rgba(0, 0, 0, 0.10) 0%,
+                    rgba(0, 0, 0, 0.04) 40%,
+                    transparent 100%);
+            pointer-events: none;
+        }
+
+        /* ── Center spine ───────────────────────── */
+        .spine {
+            position: absolute;
+            left: 50%;
+            top: -1px;
+            bottom: -1px;
+            transform: translateX(-50%);
+            width: 18px;
+            background: linear-gradient(to right,
+                    transparent 0%,
+                    rgba(0, 0, 0, 0.06) 15%,
+                    rgba(0, 0, 0, 0.20) 45%,
+                    rgba(0, 0, 0, 0.25) 50%,
+                    rgba(0, 0, 0, 0.20) 55%,
+                    rgba(0, 0, 0, 0.06) 85%,
+                    transparent 100%);
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        /* ── Layered page edges (realistic stacked pages) ── */
+        .page-edges-right {
+            position: absolute;
+            top: 3px;
+            right: -9px;
+            bottom: 3px;
+            width: 9px;
+            z-index: -1;
+            border-radius: 0 3px 3px 0;
+            background: repeating-linear-gradient(to right,
+                    #f5f3ef 0px, #eae7e2 1px,
+                    #f0eeea 1.5px, #e5e2dd 2px);
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-edges-left {
+            position: absolute;
+            top: 3px;
+            left: -9px;
+            bottom: 3px;
+            width: 9px;
+            z-index: -1;
+            border-radius: 3px 0 0 3px;
+            background: repeating-linear-gradient(to left,
+                    #f5f3ef 0px, #eae7e2 1px,
+                    #f0eeea 1.5px, #e5e2dd 2px);
+            box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-edges-bottom {
+            position: absolute;
+            left: 8px;
+            right: 8px;
+            bottom: -6px;
+            height: 6px;
+            z-index: -1;
+            border-radius: 0 0 4px 4px;
+            background: repeating-linear-gradient(to bottom,
+                    #f0eeea 0px, #e5e2dd 1px,
+                    #ebe8e4 1.5px, #dddad5 2px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ── Book shadow ────────────────────────── */
+        .book-shadow {
+            position: absolute;
+            bottom: -22px;
+            left: 4%;
+            right: 4%;
+            height: 30px;
+            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 0%, transparent 75%);
+            z-index: -2;
+            border-radius: 50%;
+        }
+
+        /* ── Controls ───────────────────────────── */
+        .controls {
+            margin-top: 50px;
+            display: flex;
+            direction: ltr;
+            /* Keep controls visually LTR so left arrow stays on left */
+            gap: 15px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 10px 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            z-index: 10;
+        }
+
+        .controls button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #3b82f6;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .controls button:hover:not(:disabled) {
+            background: #3b82f6;
+            color: #ffffff;
+            border-color: #3b82f6;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .controls button:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f8fafc;
+            color: #cbd5e1;
+        }
+
+        #pageCounter {
+            color: #1e293b;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            min-width: 90px;
+            text-align: center;
+        }
+
+        /* ── Content typography ──────────────────── */
+        .pg {
+            padding: 40px 45px;
+            height: 100%;
+            overflow-y: hidden;
+            color: #1e293b;
+        }
+
+        .pg::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .pg::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .pg::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .ch-label {
+            text-align: center;
+            font-style: italic;
+            color: #94a3b8;
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            padding-top: 18px;
+        }
+
+        .pg h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .pg h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+
+        .pg p {
+            font-size: 16px;
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 9px;
+            color: #334155;
+        }
+
+        .pull-q {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            font-style: italic;
+            color: #0f172a;
+            padding: 14px 10px;
+            border-top: 2px solid #3b82f6;
+            border-bottom: 1px solid #cbd5e1;
+            margin: 12px 0 16px;
+            line-height: 1.45;
+        }
+
+        .cover-pg {
+            background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            height: 100%;
+            box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .cover-pg h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 2px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cover-pg h1 span {
+            color: #3b82f6;
+        }
+
+        .cover-pg .sub {
+            color: #bfdbfe;
+            font-size: 26px;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            line-height: 1.6;
+            font-family: 'Amiri', serif;
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        .cover-pg .co {
+            color: #94a3b8;
+            font-size: 18px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-top: 40px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .cover-pg .yr {
+            color: #64748b;
+            font-size: 16px;
+            margin-top: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .c-line {
+            width: 60px;
+            height: 2px;
+            background: #3b82f6;
+            margin: 18px auto;
+        }
+
+        .back-pg {
+            background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 48px;
+            height: 100%;
+            box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .back-pg p {
+            color: #bfdbfe;
+            font-size: 28px;
+            font-style: italic;
+            line-height: 1.7;
+            max-width: 350px;
+            font-family: 'Amiri', serif;
+        }
+
+        .back-pg .url {
+            color: #3b82f6;
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            margin-top: 30px;
+            letter-spacing: 2px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .pg-num {
+            position: absolute;
+            bottom: 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            color: #94a3b8;
+        }
+
+        .pg-num-r {
+            right: 30px;
+        }
+
+        .pg-num-l {
+            left: 30px;
+        }
+
+        .endpaper {
+            background: linear-gradient(160deg, #0f172a, #1e293b);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .endpaper-inner {
+            text-align: center;
+        }
+
+        .endpaper-inner p {
+            color: #475569;
+            font-size: 13px;
+        }
+
+        #rightContent,
+        #leftContent {
+            width: 100%;
+            height: 100%;
+        }
+
+        .speech-pg {
+            padding: 40px 45px;
+            height: 100%;
+            overflow-y: hidden;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .speech-pg h2 {
+            font-size: 38px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 24px;
+            line-height: 1.35;
+        }
+
+        .speech-pg h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 14px;
+            margin-top: 14px;
+        }
+
+        .speech-pg p {
+            font-size: 22px;
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 18px;
+            color: #334155;
+            letter-spacing: 0.1px;
+        }
+
+        .speech-pg .pull-q {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            font-style: italic;
+            color: #0f172a;
+            padding: 24px 18px;
+            border-top: 2px solid #3b82f6;
+            border-bottom: 1px solid #cbd5e1;
+            margin: 30px 0;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="book-scene">
+        <div class="book" id="book">
+            <!-- Static LEFT half (content pages) -->
+            <div class="half half-left paper" id="halfLeft">
+                <div id="leftContent"></div>
+                <div class="page-edges-left"></div>
+            </div>
+
+            <!-- Static RIGHT half (starts with cover) -->
+            <div class="half half-right paper" id="halfRight">
+                <div id="rightContent"></div>
+                <div class="page-edges-right"></div>
+            </div>
+
+            <!-- Flip page — sits on RIGHT half, hinges from spine (left edge) -->
+            <div class="flip-page" id="flipPage" style="display:none;">
+                <div class="flip-front paper" id="flipFront"></div>
+                <div class="flip-back paper" id="flipBack"></div>
+            </div>
+
+            <!-- Spine -->
+            <div class="spine"></div>
+
+            <!-- Bottom page thickness -->
+            <div class="page-edges-bottom"></div>
+        </div>
+        <div class="book-shadow"></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <!-- LEFT arrow = forward (next) in Arabic RTL -->
+        <button id="nextBtn" title="التالي">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 18-6-6 6-6" />
+            </svg>
+        </button>
+        <span id="pageCounter">صفحة 1 – 2 / 16</span>
+        <!-- RIGHT arrow = backward (prev) in Arabic RTL -->
+        <button id="prevBtn" title="السابق">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════
+        // All 16 page contents (Arabic)
+        // ═══════════════════════════════════════════════
+        const pages = [];
+
+        pages[0] = `<div class="cover-pg" style="border-radius:0 12px 12px 0;">
+      <div style="width:50px;height:3px;background:#3b82f6;margin-bottom:30px;"></div>
+      <h1><span>Prot</span>App</h1>
+      <div class="c-line"></div>
+      <p class="sub">نظام تتبع الاستثمار<br/>والمشتريات والمشاريع</p>
+      <p class="co">AnkaraBT</p>
+      <p class="yr">2025</p>
+    </div>`;
+
+        pages[1] = `<div class="speech-pg">
+      <h2>سيداتي وسادتي،</h2>
+      <p>في عالم اليوم، لم تعد إدارة المشاريع الكبيرة تتعلق فقط بجداول البيانات والوثائق الورقية. تواجه المؤسسات العامة والخاصة تعقيداً متزايداً: تعدد المقاولين، الميزانيات المحدودة، المتطلبات القانونية، والضغط لتحقيق النتائج في الوقت المحدد.</p>
+      <p>السؤال هو: كيف تحتفظ بكل شيء تحت السيطرة، في مكان واحد، مع رؤية كاملة؟</p>
+      <div class="pull-q">الإجابة هي ProtApp.</div>
+      <span class="pg-num pg-num-l">2</span>
+    </div>`;
+
+        pages[2] = `<div class="speech-pg">
+      <p>ProtApp هو نظام تتبع استثمار ومشتريات ومشاريع شامل عبر الويب تم تطويره بواسطة شركة AnkaraBT. تم تصميمه للمؤسسات التي تحتاج إلى إدارة دورة حياة مشاريعها بالكامل — من اقتراح الميزانية إلى التسليم النهائي والأرشفة — دون الاضطرار إلى التنقل بين دزينة من الأدوات المختلفة.</p>
+      <p>اسمحوا لي أن آخذكم في جولة حول ما يجعل ProtApp مختلفاً.</p>
+      <span class="pg-num pg-num-r">3</span>
+    </div>`;
+
+        pages[3] = `<div class="speech-pg">
+      <h3>أولاً: إنه مركزي تماماً.</h3>
+      <p>يعمل جميع أصحاب المصلحة — مديرو المشاريع، مسؤولو المشتريات، المهندسون الميدانيون، المراقبون الماليون — ضمن منصة واحدة. لا بيانات مكررة. لا فجوات في الاتصال. لا ارتباك في الإصدارات. نظام واحد. مصدر واحد للحقيقة.</p>
+      <h3>ثانياً: إنه ذكي وقائم على الأدوار.</h3>
+      <p>لا يحتاج الجميع للوصول إلى كل شيء. يستخدم ProtApp نموذج تفويض ذكي، مما يعني أن كل مستخدم يرى فقط الوحدات والبيانات ذات الصلة بدوره. هذا يحافظ على أمان المعلومات ونظافة العمليات ووضوح المساءلة.</p>
+      <span class="pg-num pg-num-l">4</span>
+    </div>`;
+
+        pages[4] = `<div class="speech-pg">
+      <h3>ثالثاً: يغطي رحلة المشروع بالكامل.</h3>
+      <p>يتم بناء ProtApp حول تسع وحدات قوية. قبل وضع حجر الأساس الأول، يمكنك تحديد خطة مشروع مفصلة، وإدارة مواردك، وتحديد منظمة التحكم الخاصة بك، وتسجيل الموردين في النظام.</p>
+      <p>عندما يتعلق الأمر بالمشتريات، يتكامل ProtApp مباشرة مع EKAP، منصة المشتريات العامة الإلكترونية الرسمية في تركيا، مما يجعل عمليات المناقصات سلسة ومتوافقة تماماً.</p>
+      <span class="pg-num pg-num-r">5</span>
+    </div>`;
+
+        pages[5] = `<div class="speech-pg">
+      <p>بمجرد تشغيل المشروع، يتولى ProtApp إدارة الميزانية والمدفوعات المرحلية، مما يضمن تتبع كل ليرة، والتحقق من كل فاتورة مقاول، وتوثيق كل مرحلة مالية.</p>
+      <p>توفر وحدة مراقبة الأداء لصناع القرار لوحات معلومات في الوقت الفعلي — ليست تقارير ثابتة، بل مشاهدات حية ورسومية وديناميكية لكيفية أداء كل مشروع مقابل أهدافه.</p>
+      <span class="pg-num pg-num-l">6</span>
+    </div>`;
+
+        pages[6] = `<div class="speech-pg">
+      <p>هل تحتاج إلى موافقات؟ تعمل سير عمل الموافقة والقبول في ProtApp على رقمنة عملية التوقيع بالكامل، مما يقضي على التأخير الورقي ويوفر مسار تدقيق نظيف.</p>
+      <p>وعندما يغلق المشروع، يضمن الأرشيف الرقمي الحفاظ على كل وثيقة — كل عقد، تقرير، تصريح — إلكترونياً وإمكانية الوصول إليها على الفور.</p>
+      <span class="pg-num pg-num-r">7</span>
+    </div>`;
+
+        pages[7] = `<div class="speech-pg">
+      <h3>رابعاً: إنه يرى الصورة الكبيرة — حرفياً.</h3>
+      <p>يتكامل ProtApp مع نظم المعلومات الجغرافية (GIS)، مما يسمح لأصحاب المصلحة في المشروع بتصور مواقع المشاريع ومراحلها وتقدمها على خريطة تفاعلية. من البنية التحتية إلى التنمية الحضرية، أنت لا تقرأ فقط عن تقدم المشروع — بل تراه على الأرض.</p>
+      <p>ProtApp ليس مجرد برنامج. بل هو إطار حوكمة. يجلب الانضباط والشفافية والكفاءة إلى بعض العمليات المؤسسية الأكثر تعقيداً. سواء كنت تدير خمسة مشاريع أو خمسمائة، فإن ProtApp يتوسع معك.</p>
+      <span class="pg-num pg-num-l">8</span>
+    </div>`;
+
+        pages[8] = `<div class="speech-pg">
+      <p>في AnkaraBT، نؤمن بأن مستقبل إدارة المشاريع هو مستقبل رقمي ومتصل وذكي. ProtApp هو ذلك المستقبل — متاح اليوم.</p>
+      <div class="c-line" style="margin-top: 15px;"></div>
+      <h2>ضيوفنا الكرام، زملاؤنا وشركاؤنا،</h2>
+      <p>كل مؤسسة عظيمة تترك أثراً — ليس فقط من خلال المشاريع التي تكملها، ولكن من خلال كيفية إدارتها. إن الانضباط وراء المشروع، والمسار الورقي، والمساءلة، والجداول الزمنية — هذه هي ما يميز المؤسسات التي تعمل فحسب عن تلك التي تقود حقاً.</p>
+      <span class="pg-num pg-num-r">9</span>
+    </div>`;
+
+        pages[9] = `<div class="speech-pg">
+      <p>اليوم، أريد أن أتحدث إليكم عن منصة تم بناؤها لجعل تلك القيادة ممكنة. هذه المنصة هي ProtApp.</p>
+      <p>يرمز ProtApp إلى ما هو أكثر من تتبع المشاريع. إنه يمثل تحولاً جذرياً في كيفية تعامل المؤسسات مع الطيف الكامل لإدارة الاستثمار والمشتريات. إنه حل مصمم ليس لقسم واحد فقط، بل للمنظمة بأكملها — من المسؤول المالي لمن يحتاج لمراجعة مخصصات الميزانية، إلى مهندس الموقع لمن يسجل التقدم في الموقع، إلى المدير التنفيذي الذي يحتاج إلى عرض لوحة بيانات لـ 50 مشروعاً متزامناً قبل اجتماع مجلس الإدارة.</p>
+      <span class="pg-num pg-num-l">10</span>
+    </div>`;
+
+        pages[10] = `<div class="speech-pg">
+      <p>لنبدأ بالأساس. كل مشروع يبدأ بخطة. تتيح وحدة تخطيط المشاريع في ProtApp للفرق تحديد المعالم والمواعيد النهائية والنتائج والمسؤوليات من اليوم الأول. لا يترك أي شيء غامضاً. يتم توثيق كل شيء وتعيينه وتتبعه من لحظة الموافقة على المشروع.</p>
+      <p>لكن التخطيط هو مجرد البداية. تتعامل المؤسسات مع المشتريات — وهي واحدة من أكثر المناطق حساسية وتنظيماً في الحوكمة العامة والخاصة. يتكامل ProtApp مباشرة مع EKAP.</p>
+      <span class="pg-num pg-num-r">11</span>
+    </div>`;
+
+        pages[11] = `<div class="speech-pg">
+      <p>هذا يعني أن مناقصاتك وعطاءاتك وقرارات الشراء لا يتم تتبعها فقط داخل ProtApp — بل هي متصلة بالبنية التحتية الوطنية للمشتريات، مما يضمن الامتثال القانوني الكامل والشفافية المؤسسية.</p>
+      <p>بمجرد اكتمال الشراء وبدء التنفيذ، ينتقل ProtApp إلى وضع الأداء. يضمن نظام إدارة الميزانية والمدفوعات المرحلية تسجيل كل معاملة مالية — كل فاتورة مقاول، كل صرف، كل تعديل ميزانية — ومراجعتها والموافقة عليها من خلال سير عمل منظم. لا تتحرك الأموال دون رؤية.</p>
+      <span class="pg-num pg-num-l">12</span>
+    </div>`;
+
+        pages[12] = `<div class="speech-pg">
+      <p>على المستوى البشري، تمنح أدوات إدارة الموردين والمقاولين في ProtApp مديري المشاريع صورة حقيقية عمن يفعل ماذا، وبأي سرعة، وبأي تكلفة. يتم تحديد التأخيرات. كما يبرز ضعف الأداء. يمكن بدء الإجراءات التصحيحية فوراً، وليس بعد أسابيع عندما يقع الضرر.</p>
+      <p>أحد أقوى عوامل تميز ProtApp هو تكامله مع نظم المعلومات الجغرافية (GIS). عند إدارة مشاريع البنية التحتية أو البناء أو الأقاليم، تهم الجغرافيا. يتيح لك ProtApp رؤية مشاريعك على خريطة حية — مواقعها ومراحلها وحالاتها — مما يمنح القيادة فهماً مكانياً لا تستطيع جداول البيانات توفيره.</p>
+      <span class="pg-num pg-num-r">13</span>
+    </div>`;
+
+        pages[13] = `<div class="speech-pg">
+      <p>أخيراً، عندما يغلق المشروع، لا يقوم ProtApp بأرشفته فحسب — بل يحافظ عليه. يخزن الأرشيف الرقمي كل عقد وموافقة وشهادة ومراسلة إلكترونياً، مما يخلق ذاكرة مؤسسية دائمة وقابلة للبحث.</p>
+      <p>تم بناء ProtApp للمؤسسات التي لا تتحمل الفشل. لقد تم بناؤه لأولئك الذين يفهمون أن التنفيذ الرائع يتطلب أنظمة رائعة.</p>
+      <span class="pg-num pg-num-l">14</span>
+    </div>`;
+
+        pages[14] = `<div class="speech-pg" style="justify-content: flex-start; padding-top: 80px;">
+      <div class="pull-q">"لقد قمنا ببناء ProtApp لأن مشاريعكم تستحق ما هو أفضل من الملفات المتناثرة... إنها تستحق منصة واحدة، مبنية للمساءلة، وللنطاق الواسع، وللنتائج."</div>
+      <p style="text-align: center; font-weight: bold; margin-top: 30px;">شكراً لكم.</p>
+      <span class="pg-num pg-num-r">15</span>
+    </div>`;
+
+        pages[15] = `<div class="back-pg" style="border-radius:12px 0 0 12px;">
+      <div class="c-line"></div>
+      <p>"بنيت للمؤسسات.<br/>صممت من أجل الوضوح."</p>
+      <div class="url">ankarabt.com</div>
+    </div>`;
+
+        // ═══════════════════════════════════════════════
+        // RTL Spread Logic:
+        // spreads[i] = [leftPageIdx, rightPageIdx]
+        // In Arabic: Cover on RIGHT, content on LEFT.
+        // ═══════════════════════════════════════════════
+        const spreads = [
+            [1, 0],    // Spread 0: Left=Speech1, Right=Cover
+            [3, 2],    // Spread 1
+            [5, 4],    // Spread 2
+            [7, 6],    // Spread 3
+            [9, 8],    // Spread 4
+            [11, 10],  // Spread 5
+            [13, 12],  // Spread 6
+            [15, 14],  // Spread 7: Left=BackCover, Right=Speech14
+        ];
+
+        const ANIM_MS = 1250;       // total flip duration (matches CSS 1.2s + buffer)
+        const MIDPOINT_MS = 600;     // when the page is edge-on (~50% of anim)
+
+        let currentSpread = 0;
+        let isAnimating = false;
+
+        const leftContent = document.getElementById('leftContent');
+        const rightContent = document.getElementById('rightContent');
+        const flipPage = document.getElementById('flipPage');
+        const flipFront = document.getElementById('flipFront');
+        const flipBack = document.getElementById('flipBack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageCounter = document.getElementById('pageCounter');
+
+        function setSpread(idx) {
+            leftContent.innerHTML = pages[spreads[idx][0]];
+            rightContent.innerHTML = pages[spreads[idx][1]];
+        }
+
+        function updateCounter() {
+            const s = spreads[currentSpread];
+            pageCounter.textContent = `صفحة ${s[1] + 1} – ${s[0] + 1} / 16`;
+            nextBtn.disabled = currentSpread === spreads.length - 1;
+            prevBtn.disabled = currentSpread === 0;
+        }
+
+        /* ─── GO NEXT (RTL forward = right page swings left) ─── */
+        function goNext() {
+            if (isAnimating || currentSpread >= spreads.length - 1) return;
+            isAnimating = true;
+            const next = currentSpread + 1;
+
+            // The flip-page sits on the RIGHT half (left:50%).
+            // flipFront faces right → shows current RIGHT page content.
+            // flipBack faces left  → shows new LEFT page content.
+            flipFront.innerHTML = pages[spreads[currentSpread][1]];
+            flipBack.innerHTML = pages[spreads[next][0]];
+
+            // DON'T touch rightContent yet — it stays as-is under the flip page.
+            flipPage.style.display = 'block';
+            flipPage.classList.remove('flipping-backward');
+            flipPage.classList.add('flipping-forward');
+
+            // At midpoint (page is edge-on, hiding both halves):
+            // swap the right content underneath so it's ready when revealed.
+            setTimeout(() => {
+                rightContent.innerHTML = pages[spreads[next][1]];
+            }, MIDPOINT_MS);
+
+            // Animation done — clean up.
+            setTimeout(() => {
+                flipPage.style.display = 'none';
+                flipPage.classList.remove('flipping-forward');
+                currentSpread = next;
+                setSpread(currentSpread);
+                updateCounter();
+                isAnimating = false;
+            }, ANIM_MS);
+        }
+
+        /* ─── GO PREV (RTL backward = left page swings right) ─── */
+        function goPrev() {
+            if (isAnimating || currentSpread <= 0) return;
+            isAnimating = true;
+            const prev = currentSpread - 1;
+
+            // For backward, the flip page starts at -180deg (covering LEFT half)
+            // and swings back to 0deg (covering RIGHT half).
+            // flipBack (visible at -180, covering left) = current LEFT page.
+            // flipFront (visible at 0, covering right)  = previous RIGHT page.
+            flipBack.innerHTML = pages[spreads[currentSpread][0]];
+            flipFront.innerHTML = pages[spreads[prev][1]];
+
+            // DON'T touch leftContent yet.
+            flipPage.style.display = 'block';
+            flipPage.classList.remove('flipping-forward');
+            flipPage.classList.add('flipping-backward');
+
+            // At midpoint swap left content underneath.
+            setTimeout(() => {
+                leftContent.innerHTML = pages[spreads[prev][0]];
+            }, MIDPOINT_MS);
+
+            // Animation done.
+            setTimeout(() => {
+                flipPage.style.display = 'none';
+                flipPage.classList.remove('flipping-backward');
+                currentSpread = prev;
+                setSpread(currentSpread);
+                updateCounter();
+                isAnimating = false;
+            }, ANIM_MS);
+        }
+
+        // Button handlers
+        nextBtn.addEventListener('click', goNext);
+        prevBtn.addEventListener('click', goPrev);
+
+        // Keyboard — Arabic RTL: Left arrow / Space = forward, Right arrow = backward
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === ' ') { e.preventDefault(); goNext(); }
+            if (e.key === 'ArrowRight') { e.preventDefault(); goPrev(); }
+        });
+
+        // Click on book halves: left half = forward, right half = backward
+        document.getElementById('book').addEventListener('click', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            if (x < rect.width / 2) goNext();
+            else goPrev();
+        });
+
+        // Initialize
+        setSpread(0);
+        updateCounter();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Features & Modules — ProtApp</title>
+    <meta name="description"
+        content="Explore ProtApp's 9 integrated modules for project planning, procurement, budget management, and more." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwindcss.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } } }
+    </script>
+    <link rel="stylesheet" href="reveal.css" />
+</head>
+
+<body class="bg-slate-950 text-slate-700 font-sans antialiased">
+    <div class="bg-white min-h-screen">
+
+        <!-- NAVBAR -->
+        <nav class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-slate-100 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between min-h-[128px]">
+                <a href="index.html" class="flex items-center">
+                    <img src="logo.png" alt="ProtApp" class="h-32 w-auto">
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html"
+                        class="text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="features.html" class="text-sm font-semibold text-blue-600">Features</a>
+                    <a href="how-it-works.html"
+                        class="text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors">Process</a>
+                    <a href="contact.html"
+                        class="text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors">Contact</a>
+
+                    <!-- Language Switcher -->
+                    <div
+                        class="flex items-center gap-3 text-xs font-bold text-slate-400 border-l border-slate-200 pl-6 ml-2">
+                        <a href="features.html" class="text-blue-600 hover:text-blue-700 transition-colors">EN</a>
+                        <span class="opacity-40">|</span>
+                        <a href="features-tr.html" class="hover:text-blue-600 transition-colors">TR</a>
+                        <span class="opacity-40">|</span>
+                        <a href="features-ar.html" class="hover:text-blue-600 transition-colors">AR</a>
+                    </div>
+
+                    <a href="contact.html"
+                        class="inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl shadow-blue-600/25">Request
+                        a Demo</a>
+                </div>
+                <button class="md:hidden text-slate-500 hover:text-slate-900"
+                    onclick="document.getElementById('mob-menu').classList.toggle('hidden')">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mob-menu" class="hidden md:hidden bg-white border-t border-slate-100 px-4 pb-4">
+                <a href="index.html" class="block py-2.5 text-sm text-slate-600 hover:text-blue-600">Home</a>
+                <a href="features.html" class="block py-2.5 text-sm font-semibold text-blue-600">Features</a>
+                <a href="how-it-works.html" class="block py-2.5 text-sm text-slate-600 hover:text-blue-600">Process</a>
+                <a href="contact.html" class="block py-2.5 text-sm text-slate-600 hover:text-blue-600">Contact</a>
+
+                <!-- Mobile Language Switcher -->
+                <div
+                    class="flex items-center justify-center gap-4 py-4 mt-2 border-t border-slate-100 text-sm font-bold text-slate-400">
+                    <a href="features.html" class="text-blue-600">EN</a>
+                    <span class="opacity-40">|</span>
+                    <a href="features-tr.html" class="hover:text-blue-600">TR</a>
+                    <span class="opacity-40">|</span>
+                    <a href="features-ar.html" class="hover:text-blue-600">AR</a>
+                </div>
+
+                <a href="contact.html"
+                    class="mt-4 block text-center px-5 py-2.5 text-sm font-semibold rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 hover:-translate-y-1 shadow-md hover:shadow-lg">Request
+                    a Demo</a>
+            </div>
+        </nav>
+
+        <!-- PAGE HEADER -->
+        <section class="relative pt-16 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-blue-600 via-blue-500 to-white" style="height:130%;">
+            </div>
+            <div
+                class="absolute top-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl -translate-x-1/4 -translate-y-1/4">
+            </div>
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20 lg:py-24 reveal">
+
+                <h1 class="text-4xl lg:text-5xl font-extrabold text-white mt-3">Features & Modules</h1>
+                <p class="mt-4 text-blue-100 text-lg max-w-2xl mx-auto">Nine integrated modules covering the entire
+                    project
+                    lifecycle — from initial planning through procurement, execution, and archival.</p>
+            </div>
+        </section>
+
+        <!-- MODULES GRID -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
+
+                    <div
+                        class="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 transition-all duration-300 hover:-translate-y-2 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/10 group reveal">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-2xl mb-4 transition-colors group-hover:bg-white group-hover:shadow-sm">
+                            📋</div>
+                        <h3
+                            class="text-slate-900 font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-blue-900">
+                            Project Plan Creation</h3>
+                        <p
+                            class="text-slate-500 text-sm leading-relaxed transition-colors duration-300 group-hover:text-slate-600">
+                            Define project scopes, milestones, and
+                            deliverables with structured planning workflows. Nothing is left vague — everything is
+                            documented and trackable.</p>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 transition-all duration-300 hover:-translate-y-2 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/10 group reveal">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-2xl mb-4 transition-colors group-hover:bg-white group-hover:shadow-sm">
+                            ⚙️</div>
+                        <h3
+                            class="text-slate-900 font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-blue-900">
+                            Project Resource Management</h3>
+                        <p
+                            class="text-slate-500 text-sm leading-relaxed transition-colors duration-300 group-hover:text-slate-600">
+                            Allocate human, financial, and material
+                            resources
+                            efficiently across all active projects and investments.</p>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 transition-all duration-300 hover:-translate-y-2 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/10 group reveal">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-2xl mb-4 transition-colors group-hover:bg-white group-hover:shadow-sm">
+                            🏛️</div>
+                        <h3
+                            class="text-slate-900 font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-blue-900">
+                            Control Organization Setup</h3>
+                        <p
+                            class="text-slate-500 text-sm leading-relaxed transition-colors duration-300 group-hover:text-slate-600">
+                            Establish oversight structures, audit trails,
+                            and
+                            institutional governance frameworks for full accountability.</p>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 transition-all duration-300 hover:-translate-y-2 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/10 group reveal">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-2xl mb-4 transition-colors group-hover:bg-white group-hover:shadow-sm">
+                            🤝</div>
+                        <h3
+                            class="text-slate-900 font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-blue-900">
+                            Supplier Management</h3>
+                        <p
+                            class="text-slate-500 text-sm leading-relaxed transition-colors duration-300 group-hover:text-slate-600">
+                            Manage vendor relationships, qualifications,
+                            and
+                            compliance documentation. Know who is doing what, how fast, and at what cost.</p>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 transition-all duration-300 hover:-translate-y-2 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/10 group reveal">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-2xl mb-4 transition-colors group-hover:bg-white group-hover:shadow-sm">
+                            📑</div>
+                        <h3
+                            class="text-slate-900 font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-blue-900">
+                            EKAP-Integrated Tendering</h3>
+                        <p
+                            class="text-slate-500 text-sm leading-relaxed transition-colors duration-300 group-hover:text-slate-600">
+                            Streamline procurement with EKAP-integrated
+                            tendering and bidding workflows — ensuring full legal compliance and transparency.</p>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 transition-all duration-300 hover:-translate-y-2 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/10 group reveal">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-2xl mb-4 transition-colors group-hover:bg-white group-hover:shadow-sm">
+                            💰</div>
+                        <h3
+                            class="text-slate-900 font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-blue-900">
+                            Budget & Progress Payments</h3>
+                        <p
+                            class="text-slate-500 text-sm leading-relaxed transition-colors duration-300 group-hover:text-slate-600">
+                            Track budgets, manage invoices, and process
+                            progress payments with precision. No money moves without visibility.</p>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 transition-all duration-300 hover:-translate-y-2 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/10 group reveal">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-2xl mb-4 transition-colors group-hover:bg-white group-hover:shadow-sm">
+                            📊</div>
+                        <h3
+                            class="text-slate-900 font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-blue-900">
+                            Performance Monitoring</h3>
+                        <p
+                            class="text-slate-500 text-sm leading-relaxed transition-colors duration-300 group-hover:text-slate-600">
+                            Real-time KPIs, dynamic graphical dashboards,
+                            and
+                            live performance reports — not static, but continuously updated.</p>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 transition-all duration-300 hover:-translate-y-2 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/10 group reveal">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-2xl mb-4 transition-colors group-hover:bg-white group-hover:shadow-sm">
+                            ✅</div>
+                        <h3
+                            class="text-slate-900 font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-blue-900">
+                            Approval & Acceptance</h3>
+                        <p
+                            class="text-slate-500 text-sm leading-relaxed transition-colors duration-300 group-hover:text-slate-600">
+                            Digital approval chains, acceptance workflows,
+                            and
+                            sign-off processes — eliminating paper-based delays entirely.</p>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 transition-all duration-300 hover:-translate-y-2 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/10 group reveal">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-2xl mb-4 transition-colors group-hover:bg-white group-hover:shadow-sm">
+                            🗄️</div>
+                        <h3
+                            class="text-slate-900 font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-blue-900">
+                            Digital Archive Operations</h3>
+                        <p
+                            class="text-slate-500 text-sm leading-relaxed transition-colors duration-300 group-hover:text-slate-600">
+                            Centralized document storage, retrieval, and
+                            lifecycle management. Every contract and certificate, instantly searchable.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="pt-20 pb-40 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-white via-blue-50 to-blue-600"></div>
+            <div
+                class="absolute bottom-0 left-0 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3">
+            </div>
+            <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+                <h2
+                    class="block text-3xl font-bold text-slate-900 mb-6 transition-all duration-300 hover:text-blue-600 hover:-translate-y-1 hover:scale-105 hover:drop-shadow-lg cursor-default">
+                    Want to see these modules in action?</h2>
+                <p class="text-lg text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">Interested in seeing ProtApp
+                    in action? Reach out and we'll schedule a personalized walkthrough for your team.</p>
+                <a href="contact.html"
+                    class="inline-flex items-center px-10 py-4 rounded-full bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl shadow-blue-600/25">
+                    Request a Personalized Demo
+                </a>
+            </div>
+        </section>
+
+    </div>
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-blue-900/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <a href="index.html" class="flex items-center">
+                        <img src="logo.png" alt="ProtApp Logo" class="h-28 w-auto opacity-90 brightness-0 invert" />
+                    </a>
+                    <p class="text-slate-500 text-xs mt-3 font-medium">Built for institutions. Designed for clarity.</p>
+                </div>
+                <p class="text-slate-400 text-sm text-center font-medium">&copy; 2026 AnkaraBT. All rights reserved.</p>
+                <div class="flex items-center gap-6 text-sm font-semibold">
+                    <a href="index.html" class="text-slate-400 hover:text-blue-400 transition-colors">Home</a>
+                    <a href="features.html" class="text-slate-400 hover:text-blue-400 transition-colors">Features</a>
+                    <a href="how-it-works.html" class="text-slate-400 hover:text-blue-400 transition-colors">Process</a>
+                    <a href="contact.html" class="text-slate-400 hover:text-blue-400 transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="reveal.js"></script>
+</body>
+
+</html>
